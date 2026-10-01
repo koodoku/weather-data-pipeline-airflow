@@ -1,0 +1,13 @@
+logs/
+plugins/*
+!plugins/.gitkeep
+config/*
+!config/.gitkeep
+
+.env
+
+__pycache__/
+*.pyc
+
+.vscode/
+.idea/

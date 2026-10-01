@@ -1,0 +1,30 @@
+services:
+  postgres-weather:
+    image: postgres:16
+    container_name: postgres-weather
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${WEATHER_DB_USER}
+      POSTGRES_PASSWORD: ${WEATHER_DB_PASSWORD}
+      POSTGRES_DB: ${WEATHER_DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-weather-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${WEATHER_DB_USER}", "-d", "${WEATHER_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres-weather
+
+volumes:
+  postgres-weather-data:
